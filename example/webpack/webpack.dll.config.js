@@ -14,7 +14,7 @@ module.exports = {
       'animated',
       'react',
       'react-native',
-      // 'react-scroll-paged-view',
+      // 'react-underline-tabbar',
       // './web_modules/node_modules/react-native-web',
     ],
   },

@@ -32,7 +32,7 @@ module.exports = {
         loader: 'babel-loader',
         exclude: /node_modules/,
         // include: [
-        //   path.join(context, 'node_modules/react-scroll-paged-view'),
+        //   path.join(context, 'node_modules/react-underline-tabbar'),
         // ],
       },
     ],
