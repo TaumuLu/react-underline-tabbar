@@ -62,7 +62,7 @@ import InsideScrollView from './InsideScrollView'
 | scrollEnabled | bool | true | 是否可以手动滚动tabBar |
 | hasAnimation | bool | true | 切换tab时是否有动画 |
 | duration | number | 400 | 未提供pos时的动画持续时间(以毫秒为单位) |
-| style | bool | true | 容器样式 |
+| style | object | {} | 最外层容器样式 |
 | scrollViewStyle | object | {} | 滚动容器样式 |
 | contentContainerStyle | object | {} | RN滚动内容样式 |
 | underlineStyle | object | {} | 下划线样式 |
@@ -75,9 +75,9 @@ import InsideScrollView from './InsideScrollView'
 - [x] 优化滚动动画代码，去除Animated.divide的依赖（web端animated库不支持）
 - [x] 提供web端版本，统一props，表现和RN一致
 - [x] 提供自身动画处理，在未传入动画值时
-- [] 修复手动滚动后再次切换动画违和的问题
-- [] 提供友好的不带滚动的tab形式
-- [] 更多props配置
+- [ ] 修复手动滚动后再次切换动画违和的问题
+- [ ] 提供友好的不带滚动的tab形式
+- [ ] 更多props配置
 
 ## Changelog
 - 0.1.*
