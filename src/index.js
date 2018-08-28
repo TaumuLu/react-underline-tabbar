@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { TouchableOpacity, ScrollView as RNScrollView, Animated, View, Text } from 'react-native'
+import { TouchableOpacity, ScrollView as RNScrollView, Animated, Easing, View, Text } from 'react-native'
 
 import TabBarHOC from './decorators/tab-bar-hoc'
 
@@ -40,7 +40,7 @@ const Style = {
 const matrixKey = 'matrix'
 
 
-@TabBarHOC({ matrixKey, Button, ScrollView, AnimatedView, Animated, View, Text, Style })
+@TabBarHOC({ matrixKey, Button, ScrollView, AnimatedView, Animated, Easing, View, Text, Style })
 export default class TabBar extends Component {
 
   _getStyle() {

@@ -4,7 +4,7 @@ import { size, keys, get, createTranslateXScaleX, transformOrigin, mergeStyle, g
 import { propTypes, defaultProps } from '../prop-types'
 
 
-export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated, AnimatedView, View, Text, Style }) {
+export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated, Easing, AnimatedView, View, Text, Style }) {
   return (WrappedComponent) => {
     return class TabBarHOC extends WrappedComponent {
       static defaultProps = defaultProps
@@ -12,7 +12,7 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
 
       constructor(props) {
         super(props)
-        const { activeTab } = props
+        const { activeTab, pos } = props
 
         const scrollValue = new Animated.Value(activeTab)
         this.state = {
@@ -25,31 +25,39 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
         this.widthCollection = null
         this.offsetCollection = null
         this.scrollOffsetsCollection = null
+
+        // 是否传入动画值，传入此值可借此监听做同步动画
+        this.hasPos = !!pos
+        if (pos) {
+          const isAnimated = pos instanceof Animated.Value
+          if (!isAnimated) {
+            console.warn('pos is not instanceof Animated')
+            this.hasPos = false
+          }
+        }
       }
 
       componentDidMount() {
         const { hasAnimation, pos } = this.props
-        if (!hasAnimation) return
 
-        const isAnimated = pos instanceof Animated.Value
-        if (!isAnimated) {
-          console.warn('pos is not instanceof Animated')
-          return
+        if (hasAnimation) {
+          const { scrollValue } = this.state
+          // 未传入动画值则使用自己的动画值做监听
+          const animatedValue = this.hasPos ? pos : scrollValue
+          animatedValue.addListener((params) => {
+            const { width } = this.props
+            if (width) {
+              const value = this.hasPos ? this._getScrollValue(params) : params.value
+              this.handleScrolling({ value })
+            }
+          })
         }
-
-        pos.addListener((params) => {
-          const { width } = this.props
-          if (width) {
-            const value = this._getScrollValue(params)
-            this.handleScrolling({ value })
-          }
-        })
       }
 
       componentWillReceiveProps(nextProps) {
-        const { activeTab, hasAnimation } = this.props
+        const { activeTab } = this.props
 
-        if (!hasAnimation && activeTab !== nextProps.activeTab) {
+        if (!this.hasPos && activeTab !== nextProps.activeTab) {
           this.handleScrolling({ value: nextProps.activeTab })
         }
       }
@@ -95,12 +103,11 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
       };
 
       handleScrolling = ({ value }) => {
-        const { hasAnimation } = this.props
         const dx = get(this.offsetCollection, '_interpolation', () => 0)(value)
         const scaleX = get(this.widthCollection, '_interpolation', () => 0)(value)
 
         this.applyTransformToUnderline(scaleX, dx)
-        if (hasAnimation && this.scrollOffsetsCollection) {
+        if (this.scrollOffsetsCollection) {
           const scrollOffset = get(this.scrollOffsetsCollection, '_interpolation', () => 0)(value)
 
           if (this.scrollView) {
@@ -187,13 +194,13 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
         }
       }
 
-      // _onScroll = ({ nativeEvent }) => {
-      //   const { contentOffset } = nativeEvent
-      //   const { x, y } = contentOffset || {}
+      _onScroll = ({ nativeEvent }) => {
+        const { contentOffset } = nativeEvent
+        const { x, y } = contentOffset || {}
 
-      //   this._scrollOffsetX = x
-      //   this._scrollOffsetY = y
-      // }
+        this._scrollOffsetX = x
+        this._scrollOffsetY = y
+      }
 
       renderUnderline(style) {
         const { hasUnderline } = this.props
@@ -209,8 +216,16 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
         const { scrollValue } = this.state
         if (page === activeTab) return
 
-        this._direction = page > activeTab ? 'next' : 'prev'
-        scrollValue.setValue(page)
+        // this._direction = page > activeTab ? 'next' : 'prev'
+        if (!this.hasPos) {
+          const { duration } = this.props
+          const toValue = page
+          const easing = Easing.out(Easing.ease)
+          Animated.timing(scrollValue, { toValue, duration, easing }).start()
+        } else {
+          scrollValue.setValue(page)
+        }
+
         goToPage(page)
       }
 
@@ -281,7 +296,7 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
               onContentSizeChange={this._onContentSizeChange}
               onRef={this._scrollViewRef}
               scrollEnabled={scrollEnabled}
-              // onScroll={this._onScroll}
+              onScroll={this._onScroll}
               showsHorizontalScrollIndicator={false}
               scrollEventThrottle={1}
               bounces={false}
@@ -301,6 +316,7 @@ const defaultStyle = {
   containerStyle: {
     borderBottomWidth: 1,
     borderBottomColor: '#d2d2d2',
+    borderBottomStyle: 'solid',
   },
   tabActiveStyle: {
 

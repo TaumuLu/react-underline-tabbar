@@ -22,6 +22,7 @@ export const propTypes = {
   hasUnderline: PropTypes.bool,
   scrollEnabled: PropTypes.bool,
   hasAnimation: PropTypes.bool,
+  duration: PropTypes.number,
 }
 
 export const defaultProps = {
@@ -42,4 +43,5 @@ export const defaultProps = {
   hasUnderline: true,
   scrollEnabled: true,
   hasAnimation: true,
+  duration: 400,
 }

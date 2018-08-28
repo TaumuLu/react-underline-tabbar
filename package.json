@@ -12,11 +12,19 @@
     "type": "git",
     "url": "git+https://github.com/TaumuLu/react-underline-tabbar.git"
   },
-  "author": "",
+  "author": "TaumuLu",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/TaumuLu/react-underline-tabbar/issues"
   },
+  "keywords": [
+    "react",
+    "react-native",
+    "underline",
+    "tabs",
+    "tabbar",
+    "scroll tabs"
+  ],
   "homepage": "https://github.com/TaumuLu/react-underline-tabbar#readme",
   "dependencies": {
     "animated": "^0.2.2"

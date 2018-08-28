@@ -1,9 +1,16 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, Animated } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Animated, Dimensions, Platform, NativeModules } from 'react-native'
 import { ViewPaged } from 'react-scroll-paged-view'
 
 import TabBar from 'react-underline-tabbar'
+// import TabBar from './../src'
 
+let height = Dimensions.get('window').height
+const width = Dimensions.get('window').width
+
+if (Platform.OS === 'android') {
+  height -= NativeModules.StatusBarManager.HEIGHT
+}
 
 const styles = StyleSheet.create({
   containerWrap: {
@@ -11,6 +18,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#F5FCFF',
     display: 'flex',
+    height,
+    width,
   },
   container: {
     flex: 1,
@@ -103,29 +112,36 @@ class UnderlineTabBarExample extends Component {
       extrapolate: 'clamp',
     }),
   }));
+
+  tabs = [
+    { label: 'Page #1' },
+    { label: 'Page #22' },
+    { label: 'Page #333' },
+    { label: 'Page #4444' },
+    { label: 'Page #55555' },
+    { label: 'Page #666666' },
+  ]
+
   render() {
     return (
       <View style={[styles.containerWrap]}>
         <ViewPaged
           vertical={false}
-          tabBarUnderlineColor='#53ac49'
-          tabBarActiveTextColor='#53ac49'
           // initialPage={3}
           renderHeader={params => (
             <TabBar
-              tabsContainerStyle={styles.tabbarContainer}
+              tabs={this.tabs}
               tabStyle={styles.tab}
-              underlineAlignText
               {...params}
+              // hasAnimation={false}
+              // pos={null}
+              // duration={2000}
             />
           )}
         >
-          <Page tabLabel={{ label: 'Page #1' }} label='Page #1'/>
-          <Page tabLabel={{ label: 'Page #22', badge: 3 }} label='Page #2 aka Long!'/>
-          <Page tabLabel={{ label: 'Page #333' }} label='Page #3'/>
-          {/* <Page tabLabel={{ label: 'Page #4444' }} label='Page #4'/>
-          <Page tabLabel={{ label: 'Page #55555', badge: 3 }} label='Page #5 aka Long!'/>
-          <Page tabLabel={{ label: 'Page #666666' }} label='Page #6'/> */}
+          {this.tabs.map(({ label, text }, index) => (
+            <Page key={index} tabLabel={{ label }} label={text || label}/>
+          ))}
         </ViewPaged>
         {/* <ViewPaged
           vertical={false}

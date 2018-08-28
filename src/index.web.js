@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Animated from 'animated/lib/targets/react-dom'
+import Easing from 'animated/lib/Easing'
 
 import { mergeStyle } from './utils'
 
@@ -143,6 +144,13 @@ const Style = {
     overflowX: 'scroll',
     overflowY: 'hidden',
     WebkitOverflowScrolling: 'touch',
+    // 用来抵消隐藏滚动条
+    paddingBottom: 10,
+    marginBottom: -10,
+  },
+  underlineStyle: {
+    left: 0,
+    bottom: 10,
   },
   tabStyle: {
     display: 'flex',
@@ -152,7 +160,7 @@ const Style = {
 const matrixKey = 'matrix3d'
 
 
-@TabBarHOC({ matrixKey, Button, ScrollView, Animated, AnimatedView, View, Text, Style })
+@TabBarHOC({ matrixKey, Button, ScrollView, Animated, Easing, AnimatedView, View, Text, Style })
 export default class TabBar extends Component {
 
   _getStyle() {
