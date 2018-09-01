@@ -1,6 +1,6 @@
 {
   "name": "react-underline-tabbar",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "react underline tabbar",
   "main": "./lib",
   "scripts": {

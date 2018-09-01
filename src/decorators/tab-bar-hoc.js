@@ -162,6 +162,7 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
           inputRange,
           outputRange: outputRangeWidth,
         })
+        const { scrollPosition } = this.props
 
         inputRange.forEach((key, index) => {
           if (index === 0) return
