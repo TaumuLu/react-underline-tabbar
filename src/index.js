@@ -11,7 +11,7 @@ const Button = (props) => {
 
 class ScrollView extends Component {
   render() {
-    const { onRef, ...otherProps } = this.props
+    const { onRef, style, ...otherProps } = this.props
     const extraProps = {}
     if (onRef) {
       extraProps.ref = onRef
@@ -19,6 +19,10 @@ class ScrollView extends Component {
 
     return (
       <RNScrollView
+        style={style}
+        showsHorizontalScrollIndicator={false}
+        scrollEventThrottle={1}
+        bounces={false}
         {...extraProps}
         {...otherProps}
       />

@@ -37,7 +37,7 @@ const ref = onLayout => (dom) => {
   if (dom && onLayout) {
     const { offsetLeft, offsetTop, offsetWidth, offsetHeight } = dom
 
-    return onLayout({
+    onLayout({
       nativeEvent: {
         layout: {
           height: offsetHeight,
@@ -141,7 +141,7 @@ const Style = {
   },
   scrollViewStyle: {
     display: 'flex',
-    overflowX: 'scroll',
+    overflowX: 'hidden',
     overflowY: 'hidden',
     WebkitOverflowScrolling: 'touch',
     // 用来抵消隐藏滚动条
@@ -164,10 +164,12 @@ const matrixKey = 'matrix3d'
 export default class TabBar extends Component {
 
   _getStyle() {
-    const { scrollEnabled } = this.props
+    const { scrollEnabled, isScroll } = this.props
+    const overflowX = isScroll ? scrollEnabled ? 'scroll' : 'hidden' : 'hidden'
+
     return {
       scrollViewStyle: {
-        overflowX: scrollEnabled ? 'scroll' : 'hidden',
+        overflowX,
       },
     }
   }

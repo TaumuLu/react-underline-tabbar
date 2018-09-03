@@ -107,7 +107,8 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
         const scaleX = get(this.widthCollection, '_interpolation', () => 0)(value)
 
         this.applyTransformToUnderline(scaleX, dx)
-        if (this.scrollOffsetsCollection) {
+        const { isScroll } = this.props
+        if (this.scrollOffsetsCollection && isScroll) {
           const scrollOffset = get(this.scrollOffsetsCollection, '_interpolation', () => 0)(value)
 
           if (this.scrollView) {
@@ -139,11 +140,7 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
         const outputRangeLeft = []
         const outputRangeWidth = []
         const outputRangeScroll = [0]
-        const containerWidth = get(this.containerLayout, 'width')
-        const scrollWidth = get(this.scrollViewLayout, 'width')
         const { scrollValue } = this.state
-        let maxScrollOffset = scrollWidth - containerWidth
-        if (maxScrollOffset < 0) maxScrollOffset = 0
 
         inputRange.forEach((key) => {
           outputRangeLeft.push(this.tabState[key].x)
@@ -162,36 +159,43 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
           inputRange,
           outputRange: outputRangeWidth,
         })
-        const { scrollPosition } = this.props
+        const { scrollPosition, isScroll } = this.props
 
-        inputRange.forEach((key, index) => {
-          if (index === 0) return
+        if (isScroll) {
+          const containerWidth = get(this.containerLayout, 'width')
+          const scrollWidth = get(this.scrollViewLayout, 'width')
+          let maxScrollOffset = scrollWidth - containerWidth
+          if (maxScrollOffset < 0) maxScrollOffset = 0
 
-          const tabLeft = outputRangeLeft[index]
-          const tabWidth = outputRangeWidth[index]
-          // const nextTabLeft = outputRangeLeft[index + 1] || scrollWidth
-          // 计算tab间的间距
-          // const tabMargin = nextTabLeft - (tabLeft + tabWidth)
-          // 定位到中间
-          let scrollOffset = (tabLeft - (containerWidth / 2)) + (tabWidth / 2)
+          inputRange.forEach((key, index) => {
+            if (index === 0) return
 
-          if (scrollOffset < 0) scrollOffset = 0
-          if (scrollOffset > maxScrollOffset) scrollOffset = maxScrollOffset
+            const tabLeft = outputRangeLeft[index]
+            const tabWidth = outputRangeWidth[index]
+            // const nextTabLeft = outputRangeLeft[index + 1] || scrollWidth
+            // 计算tab间的间距
+            // const tabMargin = nextTabLeft - (tabLeft + tabWidth)
+            // 定位到中间
+            let scrollOffset = (tabLeft - (containerWidth / 2)) + (tabWidth / 2)
 
-          outputRangeScroll.push(scrollOffset)
-        })
+            if (scrollOffset < 0) scrollOffset = 0
+            if (scrollOffset > maxScrollOffset) scrollOffset = maxScrollOffset
 
-        if (scrollWidth <= containerWidth) {
-          this.scrollOffsetsCollection = scrollValue.interpolate({
-            inputRange: [-1, 0],
-            outputRange: [-40, 0],
-            extrapolate: 'clamp',
+            outputRangeScroll.push(scrollOffset)
           })
-        } else {
-          this.scrollOffsetsCollection = scrollValue.interpolate({
-            inputRange: [-1, ...inputRange],
-            outputRange: [-40, ...outputRangeScroll],
-          })
+
+          if (scrollWidth <= containerWidth) {
+            this.scrollOffsetsCollection = scrollValue.interpolate({
+              inputRange: [-1, 0],
+              outputRange: [-40, 0],
+              extrapolate: 'clamp',
+            })
+          } else {
+            this.scrollOffsetsCollection = scrollValue.interpolate({
+              inputRange: [-1, ...inputRange],
+              outputRange: [-40, ...outputRangeScroll],
+            })
+          }
         }
       }
 
@@ -212,7 +216,7 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
         )
       }
 
-      _onPress = (page) => {
+      _onPress = (page, tab) => {
         const { goToPage, activeTab } = this.props
         const { scrollValue } = this.state
         if (page === activeTab) return
@@ -227,13 +231,13 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
           scrollValue.setValue(page)
         }
 
-        goToPage(page)
+        goToPage(page, tab)
       }
 
       renderTab = (tab, page) => {
         const { activeTab, renderTab } = this.props
         const isTabActive = activeTab === page
-        const onPress = () => this._onPress(page)
+        const onPress = () => this._onPress(page, tab)
         const onLayout = event => this.onTabLayout(event, page)
 
         if (renderTab) {
@@ -294,13 +298,10 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
             <ScrollView
               style={scrollViewStyle}
               contentContainerStyle={contentContainerStyle}
-              onContentSizeChange={this._onContentSizeChange}
               onRef={this._scrollViewRef}
+              onContentSizeChange={this._onContentSizeChange}
               scrollEnabled={scrollEnabled}
               onScroll={this._onScroll}
-              showsHorizontalScrollIndicator={false}
-              scrollEventThrottle={1}
-              bounces={false}
               horizontal
             >
               {tabs.map(this.renderTab)}
@@ -316,8 +317,11 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
 const defaultStyle = {
   containerStyle: {
     borderBottomWidth: 1,
+    borderTopWidth: 0,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
     borderBottomColor: '#d2d2d2',
-    borderBottomStyle: 'solid',
+    borderStyle: 'solid',
   },
   tabActiveStyle: {
 

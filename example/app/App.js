@@ -132,6 +132,7 @@ class UnderlineTabBarExample extends Component {
             <TabBar
               tabs={this.tabs}
               tabStyle={styles.tab}
+              isScroll={false}
               {...params}
               // hasAnimation={false}
               // pos={null}
