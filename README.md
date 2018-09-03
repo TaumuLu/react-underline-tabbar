@@ -64,7 +64,6 @@ import InsideScrollView from './InsideScrollView'
 | duration | number | 400 | 未提供pos时的动画持续时间(以毫秒为单位) |
 | style | object | {} | 最外层容器样式 |
 | scrollViewStyle | object | {} | 滚动容器样式 |
-| contentContainerStyle | object | {} | RN滚动内容样式 |
 | underlineStyle | object | {} | 下划线样式 |
 | tabStyle | object | {} | tab项样式 |
 | tabActiveStyle | object | {} | 激活的tab项样式 |

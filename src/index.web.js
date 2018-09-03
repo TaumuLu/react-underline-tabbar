@@ -3,9 +3,7 @@ import Animated from 'animated/lib/targets/react-dom'
 import Easing from 'animated/lib/Easing'
 
 import { mergeStyle } from './utils'
-
 import TabBarHOC from './decorators/tab-bar-hoc'
-
 
 const defaultStyle = { display: 'flex', flexDirection: 'row' }
 const textDefaultStyle = { whiteSpace: 'nowrap' }
@@ -140,6 +138,7 @@ const Style = {
     display: 'flex',
   },
   scrollViewStyle: {
+    flex: 1,
     display: 'flex',
     overflowX: 'hidden',
     overflowY: 'hidden',
@@ -162,10 +161,9 @@ const matrixKey = 'matrix3d'
 
 @TabBarHOC({ matrixKey, Button, ScrollView, Animated, Easing, AnimatedView, View, Text, Style })
 export default class TabBar extends Component {
-
   _getStyle() {
-    const { scrollEnabled, isScroll } = this.props
-    const overflowX = isScroll ? scrollEnabled ? 'scroll' : 'hidden' : 'hidden'
+    const { scrollEnabled } = this.props
+    const overflowX = scrollEnabled ? 'scroll' : 'hidden'
 
     return {
       scrollViewStyle: {

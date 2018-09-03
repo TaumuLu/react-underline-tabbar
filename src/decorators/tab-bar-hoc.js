@@ -1,6 +1,6 @@
 import React from 'react'
-import { size, keys, get, createTranslateXScaleX, transformOrigin, mergeStyle, getMergeObject } from '../utils'
 
+import { size, keys, get, createTranslateXScaleX, transformOrigin, mergeStyle, getMergeObject } from '../utils'
 import { propTypes, defaultProps } from '../prop-types'
 
 
@@ -92,12 +92,13 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
         const tabStateDone = size(tabs) === size(keys(this.tabState))
 
         if (get(this.containerLayout, 'width') && get(this.scrollViewLayout, 'width') && tabStateDone) {
+          this.calculateInterpolations()
           if (!this.initialSetupWasDone) {
+            this.initialSetupWasDone = true
             const { activeTab } = this.props
 
-            this.calculateInterpolations()
             this.handleScrolling({ value: activeTab })
-            this.initialSetupWasDone = true
+            this.forceUpdate()
           }
         }
       };
@@ -107,8 +108,7 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
         const scaleX = get(this.widthCollection, '_interpolation', () => 0)(value)
 
         this.applyTransformToUnderline(scaleX, dx)
-        const { isScroll } = this.props
-        if (this.scrollOffsetsCollection && isScroll) {
+        if (this.scrollOffsetsCollection) {
           const scrollOffset = get(this.scrollOffsetsCollection, '_interpolation', () => 0)(value)
 
           if (this.scrollView) {
@@ -159,43 +159,41 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
           inputRange,
           outputRange: outputRangeWidth,
         })
-        const { scrollPosition, isScroll } = this.props
+        const { scrollPosition } = this.props
 
-        if (isScroll) {
-          const containerWidth = get(this.containerLayout, 'width')
-          const scrollWidth = get(this.scrollViewLayout, 'width')
-          let maxScrollOffset = scrollWidth - containerWidth
-          if (maxScrollOffset < 0) maxScrollOffset = 0
+        const containerWidth = get(this.containerLayout, 'width')
+        const scrollWidth = get(this.scrollViewLayout, 'width')
+        let maxScrollOffset = scrollWidth - containerWidth
+        if (maxScrollOffset < 0) maxScrollOffset = 0
 
-          inputRange.forEach((key, index) => {
-            if (index === 0) return
+        inputRange.forEach((key, index) => {
+          if (index === 0) return
 
-            const tabLeft = outputRangeLeft[index]
-            const tabWidth = outputRangeWidth[index]
-            // const nextTabLeft = outputRangeLeft[index + 1] || scrollWidth
-            // 计算tab间的间距
-            // const tabMargin = nextTabLeft - (tabLeft + tabWidth)
-            // 定位到中间
-            let scrollOffset = (tabLeft - (containerWidth / 2)) + (tabWidth / 2)
+          const tabLeft = outputRangeLeft[index]
+          const tabWidth = outputRangeWidth[index]
+          // const nextTabLeft = outputRangeLeft[index + 1] || scrollWidth
+          // 计算tab间的间距
+          // const tabMargin = nextTabLeft - (tabLeft + tabWidth)
+          // 定位到中间
+          let scrollOffset = (tabLeft - (containerWidth / 2)) + (tabWidth / 2)
 
-            if (scrollOffset < 0) scrollOffset = 0
-            if (scrollOffset > maxScrollOffset) scrollOffset = maxScrollOffset
+          if (scrollOffset < 0) scrollOffset = 0
+          if (scrollOffset > maxScrollOffset) scrollOffset = maxScrollOffset
 
-            outputRangeScroll.push(scrollOffset)
+          outputRangeScroll.push(scrollOffset)
+        })
+
+        if (scrollWidth <= containerWidth) {
+          this.scrollOffsetsCollection = scrollValue.interpolate({
+            inputRange: [-1, 0],
+            outputRange: [-40, 0],
+            extrapolate: 'clamp',
           })
-
-          if (scrollWidth <= containerWidth) {
-            this.scrollOffsetsCollection = scrollValue.interpolate({
-              inputRange: [-1, 0],
-              outputRange: [-40, 0],
-              extrapolate: 'clamp',
-            })
-          } else {
-            this.scrollOffsetsCollection = scrollValue.interpolate({
-              inputRange: [-1, ...inputRange],
-              outputRange: [-40, ...outputRangeScroll],
-            })
-          }
+        } else {
+          this.scrollOffsetsCollection = scrollValue.interpolate({
+            inputRange: [-1, ...inputRange],
+            outputRange: [-40, ...outputRangeScroll],
+          })
         }
       }
 
@@ -266,12 +264,11 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
         if (isClearCache) this.Style = null
         if (this.Style) return this.Style
 
-        const { style, scrollViewStyle, contentContainerStyle, underlineStyle, tabStyle, tabActiveStyle, tabTextStyle, tabTextActiveStyle } = this.props
+        const { style, scrollViewStyle, underlineStyle, tabStyle, tabActiveStyle, tabTextStyle, tabTextActiveStyle } = this.props
 
         const baseStyles = getMergeObject(defaultStyle, {
           containerStyle: style,
           scrollViewStyle,
-          contentContainerStyle,
           underlineStyle,
           tabStyle,
           tabActiveStyle,
@@ -288,7 +285,7 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
 
       render() {
         const { tabs, scrollEnabled } = this.props
-        const { containerStyle, scrollViewStyle, contentContainerStyle, underlineStyle } = this._getStyle(true)
+        const { containerStyle, scrollViewStyle, underlineStyle } = this._getStyle(true)
 
         return (
           <View
@@ -297,7 +294,6 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
           >
             <ScrollView
               style={scrollViewStyle}
-              contentContainerStyle={contentContainerStyle}
               onRef={this._scrollViewRef}
               onContentSizeChange={this._onContentSizeChange}
               scrollEnabled={scrollEnabled}
@@ -323,9 +319,6 @@ const defaultStyle = {
     borderBottomColor: '#d2d2d2',
     borderStyle: 'solid',
   },
-  tabActiveStyle: {
-
-  },
   tabTextActiveStyle: {
     color: 'navy',
   },
@@ -336,19 +329,18 @@ const defaultStyle = {
     padding: 0,
   },
   tabStyle: {
-    // flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     height: 50,
-    marginLeft: 10,
-    marginRight: 10,
+  },
+  scrollViewStyle: {
+    justifyContent: 'space-between',
   },
 }
 
 const commonStyle = {
   containerStyle: {
-    // flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start',
   },
@@ -357,10 +349,7 @@ const commonStyle = {
     width: 1,
   },
   scrollViewStyle: {
-    flex: 1,
     flexDirection: 'row',
     position: 'relative',
-  },
-  tabStyle: {
   },
 }

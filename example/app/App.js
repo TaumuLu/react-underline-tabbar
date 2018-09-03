@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, Animated, Dimensions, Platform, NativeModules } from 'react-native'
+import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Animated, Dimensions, Platform, NativeModules } from 'react-native'
 import { ViewPaged } from 'react-scroll-paged-view'
 
 import TabBar from 'react-underline-tabbar'
@@ -117,9 +117,9 @@ class UnderlineTabBarExample extends Component {
     { label: 'Page #1' },
     { label: 'Page #22' },
     { label: 'Page #333' },
-    { label: 'Page #4444' },
-    { label: 'Page #55555' },
-    { label: 'Page #666666' },
+    // { label: 'Page #4444' },
+    // { label: 'Page #55555' },
+    // { label: 'Page #666666' },
   ]
 
   render() {
