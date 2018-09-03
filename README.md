@@ -12,6 +12,7 @@ npm install react-underline-tabbar --save
 提供下划线跟随选中tab，及适应其tab的宽度  
 可以传入Animated动画值监听做动作同步，未传入自身也提供动画值，可以设置持续时间  
 可以依据自身需要传入相关style确定容器样式  
+RN和Web端支持自适应滚动，当tab的宽度超过容器时才发生滚动，并设置相应的滚动样式，否则使用justifyContent: space-between样式充满容器  
 
 ## 注意
 基于[react-native-underline-tabbar](https://github.com/Slowyn/react-native-underline-tabbar)RN组件库，借鉴了下划线部分的动画处理，在此基础上优化了滚动和onLayout的代码，并开发了web组件，感兴趣的可以去看下  
