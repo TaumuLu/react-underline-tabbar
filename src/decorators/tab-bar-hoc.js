@@ -76,8 +76,11 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
       }
 
       _onContentSizeChange = (width, height) => {
+        const { width: prevWidth, height: prevHeight } = this.scrollViewLayout || {}
+        const isUpdate = prevWidth !== width || prevHeight !== height
+
         this.scrollViewLayout = { width, height, x: 0, y: 0 }
-        this.checkMeasures()
+        this.checkMeasures(isUpdate)
       }
 
       onTabLayout({ nativeEvent }, page) {
@@ -87,12 +90,16 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
         this.checkMeasures()
       }
 
-      checkMeasures = () => {
+      checkMeasures = (isUpdate) => {
         const { tabs } = this.props
         const tabStateDone = size(tabs) === size(keys(this.tabState))
 
         if (get(this.containerLayout, 'width') && get(this.scrollViewLayout, 'width') && tabStateDone) {
-          this.calculateInterpolations()
+          // 滚动尺寸发生变化时更新动画映射值
+          if (!this.initialSetupWasDone || isUpdate) {
+            this.calculateInterpolations()
+          }
+
           if (!this.initialSetupWasDone) {
             this.initialSetupWasDone = true
             const { activeTab } = this.props
@@ -171,11 +178,24 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
 
           const tabLeft = outputRangeLeft[index]
           const tabWidth = outputRangeWidth[index]
+
           // const nextTabLeft = outputRangeLeft[index + 1] || scrollWidth
           // 计算tab间的间距
           // const tabMargin = nextTabLeft - (tabLeft + tabWidth)
-          // 定位到中间
+          // 默认定位到中间
           let scrollOffset = (tabLeft - (containerWidth / 2)) + (tabWidth / 2)
+          if (scrollPosition === 'left') {
+            const prevTabLeft = outputRangeLeft[index - 1]
+            // const prevTabWidth = outputRangeWidth[index - 1]
+
+            scrollOffset = prevTabLeft
+          } else if (scrollPosition === 'right') {
+            const nextTabLeft = outputRangeLeft[index + 1] || tabLeft + tabWidth
+            const nextTabWidth = outputRangeWidth[index + 1] || 0
+            const totalLength = nextTabLeft + nextTabWidth
+
+            scrollOffset = totalLength - containerWidth
+          }
 
           if (scrollOffset < 0) scrollOffset = 0
           if (scrollOffset > maxScrollOffset) scrollOffset = maxScrollOffset
@@ -332,6 +352,7 @@ const defaultStyle = {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingTop: 20,
     height: 50,
   },
   scrollViewStyle: {
@@ -341,6 +362,7 @@ const defaultStyle = {
 
 const commonStyle = {
   containerStyle: {
+    overflow: 'hidden',
     flexDirection: 'row',
     justifyContent: 'flex-start',
   },

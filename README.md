@@ -59,6 +59,7 @@ import InsideScrollView from './InsideScrollView'
 | goToPage | function | noop | 切换tab函数，参数为tab索引 |
 | activeTab | number | 0 | 当前激活的tab索引 |
 | renderTab | function/element | null | 渲染tab组件 |
+| scrollPosition | string | center | 滚动定位，默认滚动到中间，其他可选值为'left'、'right'，分别为相差上一个tab或下一个tab定位 |
 | hasUnderline | bool | true | 是否有下划线 |
 | scrollEnabled | bool | true | 是否可以手动滚动tabBar |
 | hasAnimation | bool | true | 切换tab时是否有动画 |
@@ -75,9 +76,15 @@ import InsideScrollView from './InsideScrollView'
 - [x] 优化滚动动画代码，去除Animated.divide的依赖（web端animated库不支持）
 - [x] 提供web端版本，统一props，表现和RN一致
 - [x] 提供自身动画处理，在未传入动画值时
+- [x] 添加自动滚动定位配置
 - [ ] 修复手动滚动后再次切换动画违和的问题
-- [ ] 提供友好的不带滚动的tab形式
+- [x] 提供友好的不带滚动的tab形式
 - [ ] 更多props配置
+- [ ] 添加可垂直方向展示tab的配置
 
 ## Changelog
-- 0.1.*
+- 1.0.*
+
+### 1.0.3+
+- 修复自动切换滚动元素时重新计算动画映射值的问题
+- 添加自动滚动定位配置

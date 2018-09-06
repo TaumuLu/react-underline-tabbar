@@ -5,7 +5,7 @@ import Easing from 'animated/lib/Easing'
 import { mergeStyle } from './utils'
 import TabBarHOC from './decorators/tab-bar-hoc'
 
-const defaultStyle = { display: 'flex', flexDirection: 'row' }
+const defaultStyle = { display: 'flex', flexDirection: 'row', boxSizing: 'border-box' }
 const textDefaultStyle = { whiteSpace: 'nowrap' }
 
 class Button extends Component {
@@ -123,7 +123,7 @@ class ScrollView extends Component {
     return (
       <div
         ref={this.setRef}
-        style={style}
+        style={mergeStyle(style, defaultStyle)}
         onScroll={this._onScroll}
         className='tabBar_scrollView'
       >
