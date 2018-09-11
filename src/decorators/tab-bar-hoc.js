@@ -92,9 +92,11 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
 
       checkMeasures = (isUpdate) => {
         const { tabs } = this.props
-        const tabStateDone = size(tabs) === size(keys(this.tabState))
+        const currentTabsLen = size(tabs)
+        const isGtMinLimit = currentTabsLen > 1
+        const tabStateDone = currentTabsLen === size(keys(this.tabState))
 
-        if (get(this.containerLayout, 'width') && get(this.scrollViewLayout, 'width') && tabStateDone) {
+        if (isGtMinLimit && get(this.containerLayout, 'width') && get(this.scrollViewLayout, 'width') && tabStateDone) {
           // 滚动尺寸发生变化时更新动画映射值
           if (!this.initialSetupWasDone || isUpdate) {
             this.calculateInterpolations()
@@ -352,7 +354,6 @@ const defaultStyle = {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 20,
     height: 50,
   },
   scrollViewStyle: {
