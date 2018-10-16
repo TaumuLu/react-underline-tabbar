@@ -88,3 +88,6 @@ import InsideScrollView from './InsideScrollView'
 ### 1.0.3+
 - 修复自动切换滚动元素时重新计算动画映射值的问题
 - 添加自动滚动定位配置
+
+### 1.0.5+
+- 修复h5部分手机使用matrix3d导致的底线错位bug

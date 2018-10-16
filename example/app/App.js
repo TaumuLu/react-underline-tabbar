@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Animated, Dimensions, Platform, NativeModules } from 'react-native'
+import { ScrollView, TextInput, StyleSheet, Text, View, TouchableOpacity, Animated, Dimensions, Platform, NativeModules } from 'react-native'
 import { ViewPaged } from 'react-scroll-paged-view'
 
 import TabBar from 'react-underline-tabbar'
@@ -40,16 +40,36 @@ const styles = StyleSheet.create({
   },
 })
 
-const Page = ({ label, text = '' }) => (
-  <View style={styles.container}>
-    <Text style={styles.welcome}>
-      {label}
-    </Text>
-    <Text style={styles.instructions}>
-      {text}
-    </Text>
-  </View>
-)
+class Page extends Component {
+  state = {
+    value: 11111,
+  }
+
+  _onChangeText = (value) => {
+    this.setState({ value })
+  }
+
+  render() {
+    const { label, text = '' } = this.props
+    const { value } = this.state
+
+    return (
+      <View style={styles.container}>
+        <TextInput
+          style={{ height: 40, width: 200, borderColor: 'gray', borderWidth: 1 }}
+          onChangeText={this._onChangeText}
+          value={`${value}`}
+        />
+        <Text style={styles.welcome}>
+          {label}
+        </Text>
+        <Text style={styles.instructions}>
+          {text}
+        </Text>
+      </View>
+    )
+  }
+}
 
 const Tab = ({ tab, page, isTabActive, onPressHandler, onTabLayout, styles }) => {
   const { label, icon } = tab

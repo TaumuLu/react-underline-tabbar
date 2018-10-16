@@ -130,13 +130,17 @@ export default function ScrollPageHOC({ matrixKey, Button, ScrollView, Animated,
       applyTransformToUnderline(scaleX, dx) {
         if (!this.underlineRef) return
 
-        const matrix = createTranslateXScaleX(scaleX, dx)
-        transformOrigin(matrix, { x: -0.5, y: 0, z: 0 })
+        // const matrix = createTranslateXScaleX(scaleX, dx)
+        // transformOrigin(matrix, { x: -0.5, y: 0, z: 0 })
+        const width = scaleX
+        const translateX = dx
         this.underlineRef.setNativeProps({
           style: {
+            width,
             transform: [
               {
-                [matrixKey]: matrix,
+                translateX,
+                // [matrixKey]: matrix,
               },
             ],
           },
