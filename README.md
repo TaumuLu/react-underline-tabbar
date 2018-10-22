@@ -59,7 +59,7 @@ import InsideScrollView from './InsideScrollView'
 | goToPage | function | noop | 切换tab函数，参数为tab索引 |
 | activeTab | number | 0 | 当前激活的tab索引 |
 | renderTab | function/element | null | 渲染tab组件 |
-| scrollPosition | string | center | 滚动定位，默认滚动到中间，其他可选值为'left'、'right'，分别为相差上一个tab或下一个tab定位 |
+| scrollPosition | string | center | 滚动定位，默认滚动到中间，其他可选值为'prev'、'next'，分别为相差上一个tab或下一个tab定位 |
 | hasUnderline | bool | true | 是否有下划线 |
 | scrollEnabled | bool | true | 是否可以手动滚动tabBar |
 | hasAnimation | bool | true | 切换tab时是否有动画 |
@@ -71,6 +71,7 @@ import InsideScrollView from './InsideScrollView'
 | tabActiveStyle | object | {} | 激活的tab项样式 |
 | tabTextStyle | object | {} | tab项文字样式 |
 | tabTextActiveStyle | object | {} | 激活的tab项文字样式 |
+| vertical | bool | true | 是否为垂直方向展示tab |
 
 ## TODO
 - [x] 优化滚动动画代码，去除Animated.divide的依赖（web端animated库不支持）
@@ -80,7 +81,7 @@ import InsideScrollView from './InsideScrollView'
 - [ ] 修复手动滚动后再次切换动画违和的问题
 - [x] 提供友好的不带滚动的tab形式
 - [ ] 更多props配置
-- [ ] 添加可垂直方向展示tab的配置
+- [x] 添加可垂直方向展示tab的配置
 
 ## Changelog
 - 1.0.*
@@ -91,3 +92,6 @@ import InsideScrollView from './InsideScrollView'
 
 ### 1.0.5+
 - 修复h5部分手机使用matrix3d导致的底线错位bug
+
+### 1.1.0+
+- 增加垂直方向展示tab的配置vertical

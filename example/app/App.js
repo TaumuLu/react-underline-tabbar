@@ -3,7 +3,7 @@ import { ScrollView, TextInput, StyleSheet, Text, View, TouchableOpacity, Animat
 import { ViewPaged } from 'react-scroll-paged-view'
 
 import TabBar from 'react-underline-tabbar'
-// import TabBar from './../src'
+// import TabBar from '../src'
 
 let height = Dimensions.get('window').height
 const width = Dimensions.get('window').width
@@ -12,7 +12,7 @@ if (Platform.OS === 'android') {
   height -= NativeModules.StatusBarManager.HEIGHT
 }
 
-const styles = StyleSheet.create({
+const styles = {
   containerWrap: {
     flex: 1,
     justifyContent: 'center',
@@ -38,7 +38,10 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontSize: 28,
   },
-})
+  tabStyle: {
+    paddingHorizontal: 12,
+  },
+}
 
 class Page extends Component {
   state = {
@@ -137,9 +140,22 @@ class UnderlineTabBarExample extends Component {
     { label: 'Page #1' },
     { label: 'Page #22' },
     { label: 'Page #333' },
-    // { label: 'Page #4444' },
-    // { label: 'Page #55555' },
-    // { label: 'Page #666666' },
+    { label: 'Page #4444' },
+    { label: 'Page #55555' },
+    { label: 'Page #666666' },
+    // { label: 'Page #777777' },
+    // { label: 'Page #888888' },
+    // { label: 'Page #999999' },
+    // { label: 'Page #000000' },
+    // { label: 'Page #111111' },
+    // { label: 'Page #222222' },
+    // { label: 'Page #333333' },
+    // { label: 'Page #777777' },
+    // { label: 'Page #888888' },
+    // { label: 'Page #999999' },
+    // { label: 'Page #777777' },
+    // { label: 'Page #888888' },
+    // { label: 'Page #999999' },
   ]
 
   render() {
@@ -148,17 +164,25 @@ class UnderlineTabBarExample extends Component {
         <ViewPaged
           vertical={false}
           // initialPage={3}
-          renderHeader={params => (
-            <TabBar
-              tabs={this.tabs}
-              tabStyle={styles.tab}
-              isScroll={false}
-              {...params}
-              // hasAnimation={false}
-              // pos={null}
-              // duration={2000}
-            />
-          )}
+          renderPosition='top'
+          renderHeader={(params) => {
+            // console.log('TCL: render -> params', params)
+            return (
+              <TabBar
+                tabs={this.tabs}
+                tabStyle={styles.tabStyle}
+                {...params}
+                vertical={false}
+                // scrollPosition='next'
+                // hasUnderline={false}
+                // scrollEnabled={false}
+                // hasAnimation={false}
+                // vertical={false}
+                pos={null}
+                // duration={2000}
+              />
+            )
+          }}
         >
           {this.tabs.map(({ label, text }, index) => (
             <Page key={index} tabLabel={{ label }} label={text || label}/>

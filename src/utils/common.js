@@ -117,6 +117,41 @@ export const getMergeObject = (originObject, mergeObject) => {
   })
 }
 
+// const regMap = {
+//   '([a-z]*)Horizontal': ['Left', 'Right'],
+//   '([a-z]*)Vertical': ['Top', 'Bottom'],
+// }
+const keyMap = {
+  paddingHorizontal: ['paddingLeft', 'paddingRight'],
+  marginHorizontal: ['marginLeft', 'marginRight'],
+  paddingVertical: ['paddingTop', 'paddingBottom'],
+  marginVertical: ['marginTop', 'marginBottom'],
+}
+const getReplaceStyle = (style = {}, key) => {
+  const reKeys = keyMap[key] || key
+  const type = getType(reKeys)
+  const value = style[key]
+  if (type === 'Array') {
+    return reKeys.reduce((p, c) => {
+      return {
+        ...p,
+        [c]: value,
+      }
+    }, {})
+  }
+  return {
+    [key]: value,
+  }
+}
+
+export const handleStyle = (style = {}) => {
+  const styleKeys = keys(style)
+  return styleKeys.reduce((reStyle, k) => {
+    const replaceStyle = getReplaceStyle(style, k)
+    return { ...reStyle, ...replaceStyle }
+  }, {})
+}
+
 export const MatrixMath = {
   createIdentityMatrix() {
     return [

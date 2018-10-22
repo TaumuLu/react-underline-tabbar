@@ -23,6 +23,7 @@ export const propTypes = {
   scrollEnabled: PropTypes.bool,
   hasAnimation: PropTypes.bool,
   duration: PropTypes.number,
+  vertical: PropTypes.bool,
 }
 
 export const defaultProps = {
@@ -44,4 +45,5 @@ export const defaultProps = {
   scrollEnabled: true,
   hasAnimation: true,
   duration: 400,
+  vertical: true,
 }
