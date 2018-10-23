@@ -20,6 +20,7 @@ export default function ScrollPageHOC(WrappedComponent) {
 
       this.tabState = {}
       this.initialSetupWasDone = false
+      this._isOnPress = false
 
       this.widthCollection = null
       this.offsetCollection = null
@@ -46,11 +47,11 @@ export default function ScrollPageHOC(WrappedComponent) {
         const { scrollValue } = this.state
         // 未传入动画值则使用自己的动画值做监听
         const animatedValue = this.hasPos ? pos : scrollValue
-        animatedValue.addListener((params) => {
+        animatedValue.addListener((params = {}) => {
           const { width, height, vertical } = this.props
           const propsValue = vertical ? height : width
           if (propsValue) {
-            const value = this.hasPos ? this._getScrollValue(params, propsValue) : params.value
+            const value = this.hasPos ? params.value / propsValue : params.value
             this.handleScrolling({ value })
           }
         })
@@ -58,10 +59,17 @@ export default function ScrollPageHOC(WrappedComponent) {
     }
 
     componentWillReceiveProps(nextProps) {
-      const { activeTab } = this.props
+      const { activeTab, hasAnimation } = this.props
+      const nextActiveTab = nextProps.activeTab
 
-      if (!this.hasPos && activeTab !== nextProps.activeTab) {
-        this.handleScrolling({ value: nextProps.activeTab })
+      if (!this._isOnPress && activeTab !== nextActiveTab) {
+        if (hasAnimation) {
+          if (!this.hasPos) {
+            this._updateAnimated(nextActiveTab)
+          }
+        } else {
+          this.handleScrolling({ value: nextActiveTab })
+        }
       }
     }
 
@@ -249,18 +257,27 @@ export default function ScrollPageHOC(WrappedComponent) {
       )
     }
 
+    _updateAnimated(toValue, callBack) {
+      const { duration } = this.props
+      const { scrollValue } = this.state
+      const easing = Easing.out(Easing.ease)
+
+      Animated.timing(scrollValue, { toValue, duration, easing }).start(callBack)
+    }
+
     _onPress = (page, tab) => {
-      const { goToPage, activeTab } = this.props
+      const { goToPage, activeTab, hasAnimation } = this.props
       const { scrollValue } = this.state
       if (page === activeTab) return
 
       // this._direction = page > activeTab ? 'next' : 'prev'
-      if (!this.hasPos) {
-        const { duration } = this.props
-        const toValue = page
-        const easing = Easing.out(Easing.ease)
-        Animated.timing(scrollValue, { toValue, duration, easing }).start()
+      if (!this.hasPos && hasAnimation) {
+        this._isOnPress = true
+        this._updateAnimated(page, () => {
+          this._isOnPress = false
+        })
       } else {
+        // 这里只是同步一下值，并没有元素消费这个动画值，只是在用这个值做映射
         scrollValue.setValue(page)
       }
 

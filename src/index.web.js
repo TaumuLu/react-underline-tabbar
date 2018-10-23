@@ -25,8 +25,4 @@ export default class TabBar extends Component {
       },
     }
   }
-
-  _getScrollValue({ value }, propsValue) {
-    return -(value / propsValue)
-  }
 }

@@ -165,6 +165,7 @@ class UnderlineTabBarExample extends Component {
           vertical={false}
           // initialPage={3}
           renderPosition='top'
+          // renderPosition='left'
           renderHeader={(params) => {
             // console.log('TCL: render -> params', params)
             return (
@@ -178,7 +179,7 @@ class UnderlineTabBarExample extends Component {
                 // scrollEnabled={false}
                 // hasAnimation={false}
                 // vertical={false}
-                pos={null}
+                // pos={null}
                 // duration={2000}
               />
             )
