@@ -73,7 +73,7 @@ import InsideScrollView from './InsideScrollView'
 | tabTextStyle | object | {} | tab项文字样式 |
 | tabTextActiveStyle | object | {} | 激活的tab项文字样式 |
 | vertical | bool | true | 是否为垂直方向展示tab |
-| isAutoSize | bool | false | 当设置下划线尺寸值时，是否在tabBar可以滚动的情况下恢复使用自动宽度 |
+| isAutoSize | bool | false | 当设置下划线尺寸值时，是否在tabBar可以滚动的情况下恢复使用自动尺寸 |
 
 ## TODO
 - [x] 优化滚动动画代码，去除Animated.divide的依赖（web端animated库不支持）
