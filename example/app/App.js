@@ -39,7 +39,7 @@ const styles = {
     fontSize: 28,
   },
   tabStyle: {
-    paddingHorizontal: 12,
+    // paddingHorizontal: 12,
   },
 }
 
@@ -137,12 +137,12 @@ class UnderlineTabBarExample extends Component {
   }));
 
   tabs = [
-    { label: 'Page #1' },
+    { label: 'Page' },
     { label: 'Page #22' },
     { label: 'Page #333' },
     { label: 'Page #4444' },
-    { label: 'Page #55555' },
-    { label: 'Page #666666' },
+    // { label: 'Page #55555' },
+    // { label: 'Page #666666' },
     // { label: 'Page #777777' },
     // { label: 'Page #888888' },
     // { label: 'Page #999999' },
@@ -174,6 +174,8 @@ class UnderlineTabBarExample extends Component {
                 tabStyle={styles.tabStyle}
                 {...params}
                 vertical={false}
+                underlineStyle={{ width: 60 }}
+                // isAutoSize
                 // scrollPosition='next'
                 // hasUnderline={false}
                 // scrollEnabled={false}

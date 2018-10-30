@@ -20,6 +20,7 @@ export default function ScrollPageHOC(WrappedComponent) {
 
       this.tabState = {}
       this.initialSetupWasDone = false
+      this.isScrollTabBar = false
       this._isOnPress = false
 
       this.widthCollection = null
@@ -143,18 +144,29 @@ export default function ScrollPageHOC(WrappedComponent) {
 
     applyTransformToUnderline(scaleValue, dPos) {
       if (!this.underlineRef) return
-      const { vertical } = this.props
+      const { vertical, underlineStyle = {}, isAutoSize = false } = this.props
 
       // const matrix = createTranslateXScaleX(scaleValue, dPos)
       // transformOrigin(matrix, { x: -0.5, y: 0, z: 0 })
       const valueKey = vertical ? 'height' : 'width'
       const posKey = vertical ? 'translateY' : 'translateX'
+      const fixedSize = get(underlineStyle, valueKey)
+      let sizeValue = scaleValue
+      let posValue = dPos
+      // 固定尺寸
+      const isReplace = isAutoSize ? !this.isScrollTabBar : true
+      if (isReplace && fixedSize && fixedSize < scaleValue) {
+        sizeValue = fixedSize
+        const diffValue = (scaleValue - fixedSize) / 2
+        posValue = dPos + diffValue
+      }
+
       this.underlineRef.setNativeProps({
         style: {
-          [valueKey]: scaleValue,
+          [valueKey]: sizeValue,
           transform: [
             {
-              [posKey]: dPos,
+              [posKey]: posValue,
               // [matrixKey]: matrix,
             },
           ],
@@ -173,7 +185,7 @@ export default function ScrollPageHOC(WrappedComponent) {
       const getKey = vertical ? 'height' : 'width'
 
       inputRange.forEach((key) => {
-        const { x, y, width, height } = this.tabState[key]
+        const { x, y, width = 0, height = 0 } = this.tabState[key]
         outputRangePos.push(vertical ? y : x)
         outputRangeValue.push(vertical ? height : width)
       })
@@ -237,6 +249,15 @@ export default function ScrollPageHOC(WrappedComponent) {
           inputRange: [-1, ...inputRange],
           outputRange: [-40, ...outputRangeScroll],
         })
+      }
+
+      const tabTotalValue = outputRangeValue.reduce((count, value) => {
+        return count + value
+      }, 0)
+      if (tabTotalValue > containerValue) {
+        this.isScrollTabBar = true
+      } else {
+        this.isScrollTabBar = false
       }
     }
 

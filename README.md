@@ -1,6 +1,6 @@
 # react-underline-tabbar
 
-**选项卡，下划线跟随，自动滚动**  
+**选项卡，下划线跟随，自动滚动**
 
 ## 安装
 ```
@@ -8,15 +8,16 @@ npm install react-underline-tabbar --save
 ```
 
 ## 简介
-支持RN端和的web端的tabs组件  
-提供下划线跟随选中tab，及适应其tab的宽度  
-可以传入Animated动画值监听做动作同步，未传入自身也提供动画值，可以设置持续时间  
-可以依据自身需要传入相关style确定容器样式  
-RN和Web端支持自适应滚动，当tab的宽度超过容器时才发生滚动，并设置相应的滚动样式，否则使用justifyContent: space-between样式充满容器  
+支持RN端和的web端的tabs组件
+提供下划线跟随选中tab，及适应其tab的宽度或高度
+可以传入Animated动画值监听做动作同步，未传入自身也提供动画值，可以设置持续时间
+可以依据自身需要传入相关style确定容器样式
+RN和Web端支持自适应滚动，当tab的宽度超过容器时才发生滚动，并设置相应的滚动样式，否则默认使用justifyContent: space-between样式充满容器，可以通过设置style改变默认样式
+可以通过传入underlineStyle中的width/height给予下划线固定尺寸，超出容器尺寸时忽略，可以通过设置isAutoSize使在tabBar可滚动时恢复为自动尺寸
 
 ## 注意
-基于[react-native-underline-tabbar](https://github.com/Slowyn/react-native-underline-tabbar)RN组件库，借鉴了下划线部分的动画处理，在此基础上优化了滚动和onLayout的代码，并开发了web组件，感兴趣的可以去看下  
-可以配合react-scroll-paged-view来做tabs视图同步动画  
+基于[react-native-underline-tabbar](https://github.com/Slowyn/react-native-underline-tabbar)RN组件库，借鉴了下划线部分的动画处理，在此基础上优化了滚动和onLayout的代码，并开发了web组件，感兴趣的可以去看下
+可以配合react-scroll-paged-view来做tabs视图同步动画
 
 ## 使用
 结合可以配合react-scroll-paged-view使用
@@ -72,6 +73,7 @@ import InsideScrollView from './InsideScrollView'
 | tabTextStyle | object | {} | tab项文字样式 |
 | tabTextActiveStyle | object | {} | 激活的tab项文字样式 |
 | vertical | bool | true | 是否为垂直方向展示tab |
+| isAutoSize | bool | false | 当设置下划线尺寸值时，是否在tabBar可以滚动的情况下恢复使用自动宽度 |
 
 ## TODO
 - [x] 优化滚动动画代码，去除Animated.divide的依赖（web端animated库不支持）
@@ -82,6 +84,7 @@ import InsideScrollView from './InsideScrollView'
 - [x] 提供友好的不带滚动的tab形式
 - [ ] 更多props配置
 - [x] 添加可垂直方向展示tab的配置
+- [x] 提供下滑线固定尺寸相关的设置
 
 ## Changelog
 - 1.0.*
@@ -95,3 +98,6 @@ import InsideScrollView from './InsideScrollView'
 
 ### 1.1.0+
 - 增加垂直方向展示tab的配置vertical
+
+### 1.1.2+
+- 增加固定下滑线相关配置isAutoSize

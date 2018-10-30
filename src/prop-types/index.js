@@ -24,6 +24,7 @@ export const propTypes = {
   hasAnimation: PropTypes.bool,
   duration: PropTypes.number,
   vertical: PropTypes.bool,
+  isAutoSize: PropTypes.bool,
 }
 
 export const defaultProps = {
@@ -46,4 +47,5 @@ export const defaultProps = {
   hasAnimation: true,
   duration: 400,
   vertical: true,
+  isAutoSize: false,
 }
