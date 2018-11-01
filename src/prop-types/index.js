@@ -5,6 +5,7 @@ export const propTypes = {
   tabs: PropTypes.array,
   pos: PropTypes.object,
   width: PropTypes.number,
+  height: PropTypes.number,
   goToPage: noop,
   activeTab: PropTypes.number,
   renderTab: PropTypes.oneOfType([
@@ -30,7 +31,8 @@ export const propTypes = {
 export const defaultProps = {
   tabs: [],
   pos: null,
-  width: 0,
+  width: undefined,
+  height: undefined,
   goToPage: noop,
   activeTab: 0,
   renderTab: null,

@@ -56,7 +56,8 @@ import InsideScrollView from './InsideScrollView'
 | --- | --- | --- | --- |
 | tabs | array | [] | tab信息数组，至少提供label属性展示 |
 | pos | animated | null | animated值，用作监听 |
-| width | number | 0 | 滚动视图的width |
+| width | number | undefined | 滚动视图的width |
+| width | number | undefined | 滚动视图的height |
 | goToPage | function | noop | 切换tab函数，参数为tab索引 |
 | activeTab | number | 0 | 当前激活的tab索引 |
 | renderTab | function/element | null | 渲染tab组件 |
@@ -101,3 +102,7 @@ import InsideScrollView from './InsideScrollView'
 
 ### 1.1.2+
 - 增加固定下滑线相关配置isAutoSize
+
+### 1.1.4+
+- 修复作为独立组件时未传入width/height导致下滑线不跟随bug
+- 修复未滚动时可以使用传入tabStyle的flex属性

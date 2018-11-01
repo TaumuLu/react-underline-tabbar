@@ -151,7 +151,7 @@ const Style = {
   },
   tabStyle: {
     display: 'flex',
-    flex: '0 0 auto',
+    // flex: '0 0 auto',
   },
 }
 

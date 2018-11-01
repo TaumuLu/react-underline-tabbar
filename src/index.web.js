@@ -1,9 +1,9 @@
-import { Component } from 'react'
+import { PureComponent } from 'react'
 import { TabBarHOC } from './decorators'
 
 
 @TabBarHOC
-export default class TabBar extends Component {
+export default class TabBar extends PureComponent {
   _getStyle() {
     const { scrollEnabled, vertical } = this.props
     const overflowKey = vertical ? 'overflowY' : 'overflowX'
@@ -12,6 +12,11 @@ export default class TabBar extends Component {
     const paddingKey = vertical ? 'paddingRight' : 'paddingBottom'
     const marginKey = vertical ? 'marginRight' : 'marginBottom'
     const linePos = vertical ? 'right' : 'bottom'
+
+    const tabStyle = {}
+    if (this.isScrollTabBar) {
+      tabStyle.flex = '0 0 auto'
+    }
 
     return {
       scrollViewStyle: {
@@ -23,6 +28,7 @@ export default class TabBar extends Component {
       underlineStyle: {
         [linePos]: 10,
       },
+      tabStyle,
     }
   }
 }

@@ -17,6 +17,18 @@ export const isEmpty = (value) => {
   }
 }
 
+export const isEqual = (object = {}, other = {}) => {
+  const keys = Object.keys(object)
+  const otherKeys = Object.keys(other)
+  if (size(keys) !== size(otherKeys)) return false
+
+  return keys.every((key) => {
+    const value = object[key]
+    const otherValue = other[key]
+    return value === otherValue
+  })
+}
+
 const baseGetSet = (path) => {
   const type = getType(path)
   switch (type) {

@@ -39,6 +39,7 @@ const styles = {
     fontSize: 28,
   },
   tabStyle: {
+    // flex: 1,
     // paddingHorizontal: 12,
   },
 }
@@ -158,9 +159,26 @@ class UnderlineTabBarExample extends Component {
     // { label: 'Page #999999' },
   ]
 
+  state = {
+    activeTab: 1,
+  }
+
+  _goToPage = (activeTab) => {
+    this.setState({ activeTab })
+  }
+
   render() {
+    const { activeTab } = this.state
+
     return (
       <View style={[styles.containerWrap]}>
+        <TabBar
+          tabs={this.tabs}
+          tabStyle={{ flex: 1 }}
+          vertical={false}
+          goToPage={this._goToPage}
+          activeTab={activeTab}
+        />
         <ViewPaged
           vertical={false}
           // initialPage={3}
@@ -171,10 +189,11 @@ class UnderlineTabBarExample extends Component {
             return (
               <TabBar
                 tabs={this.tabs}
-                tabStyle={styles.tabStyle}
+                // tabStyle={{ flex: 1 }}
                 {...params}
                 vertical={false}
-                underlineStyle={{ width: 60 }}
+                // scrollViewStyle={{ flex: 1 }}
+                // underlineStyle={{ width: 60 }}
                 // isAutoSize
                 // scrollPosition='next'
                 // hasUnderline={false}

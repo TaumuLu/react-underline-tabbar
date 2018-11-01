@@ -1,6 +1,6 @@
 import React from 'react'
 import { propTypes, defaultProps } from '../prop-types'
-import { size, keys, get, createTranslateXScaleX, transformOrigin, mergeStyle, getMergeObject } from '../utils'
+import { size, keys, get, createTranslateXScaleX, transformOrigin, mergeStyle, getMergeObject, isEqual } from '../utils'
 import { matrixKey, Button, ScrollView, Animated, Easing, AnimatedView, View, Text, Style } from '../components'
 
 
@@ -19,8 +19,9 @@ export default function ScrollPageHOC(WrappedComponent) {
       }
 
       this.tabState = {}
+      this.tabStateDone = false
       this.initialSetupWasDone = false
-      this.isScrollTabBar = false
+      this.isScrollTabBar = null
       this._isOnPress = false
 
       this.widthCollection = null
@@ -42,14 +43,16 @@ export default function ScrollPageHOC(WrappedComponent) {
     }
 
     componentDidMount() {
-      const { hasAnimation, pos } = this.props
+      const { hasAnimation, pos, isTest } = this.props
 
       if (hasAnimation) {
         const { scrollValue } = this.state
         // 未传入动画值则使用自己的动画值做监听
         const animatedValue = this.hasPos ? pos : scrollValue
         animatedValue.addListener((params = {}) => {
-          const { width, height, vertical } = this.props
+          const defaultWidth = get(this.containerLayout, 'width')
+          const defaultHeight = get(this.containerLayout, 'height')
+          const { width = defaultWidth, height = defaultHeight, vertical } = this.props
           const propsValue = vertical ? height : width
           if (propsValue) {
             const value = this.hasPos ? params.value / propsValue : params.value
@@ -88,18 +91,37 @@ export default function ScrollPageHOC(WrappedComponent) {
     }
 
     _onContentSizeChange = (width, height) => {
-      const { width: prevWidth, height: prevHeight } = this.scrollViewLayout || {}
-      const isUpdate = prevWidth !== width || prevHeight !== height
+      const scrollViewValue = { x: 0, y: 0, width, height }
+      const isUpdate = !isEqual(this.scrollViewLayout || {}, scrollViewValue)
 
-      this.scrollViewLayout = { width, height, x: 0, y: 0 }
+      this.scrollViewLayout = scrollViewValue
       this.checkMeasures(isUpdate)
+    }
+
+    _tempCount = 0
+    _checkCount() {
+      const { tabs } = this.props
+      const currentTabsLen = size(tabs)
+      this._tempCount += 1
+
+      if (this._tempCount >= currentTabsLen) {
+        this._tempCount = 0
+        this.tabStateDone = true
+      } else {
+        this.tabStateDone = false
+      }
     }
 
     onTabLayout({ nativeEvent }, page) {
       const { x, y, width, height } = nativeEvent.layout
-      this.tabState[page] = { x, y, width, height }
+      const tabValue = { x, y, width, height }
+      const isUpdate = !isEqual(get(this.tabState, page, {}), tabValue)
 
-      this.checkMeasures()
+      this.tabState[page] = { x, y, width, height }
+      if (isUpdate) {
+        this._checkCount(page)
+      }
+      this.checkMeasures(isUpdate)
     }
 
     checkMeasures = (isUpdate) => {
@@ -114,8 +136,9 @@ export default function ScrollPageHOC(WrappedComponent) {
           this.calculateInterpolations()
         }
 
-        if (!this.initialSetupWasDone) {
+        if (!this.initialSetupWasDone || this.tabStateDone) {
           this.initialSetupWasDone = true
+          this.tabStateDone = false
           const { activeTab } = this.props
 
           this.handleScrolling({ value: activeTab })
