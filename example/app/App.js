@@ -141,7 +141,7 @@ class UnderlineTabBarExample extends Component {
     { label: 'Page' },
     { label: 'Page #22' },
     { label: 'Page #333' },
-    { label: 'Page #4444' },
+    // { label: 'Page #4444' },
     // { label: 'Page #55555' },
     // { label: 'Page #666666' },
     // { label: 'Page #777777' },
@@ -174,7 +174,8 @@ class UnderlineTabBarExample extends Component {
       <View style={[styles.containerWrap]}>
         <TabBar
           tabs={this.tabs}
-          tabStyle={{ flex: 1 }}
+          // tabStyle={{ flex: 1 }}
+          scrollViewStyle={{ justifyContent: 'space-around' }}
           vertical={false}
           goToPage={this._goToPage}
           activeTab={activeTab}

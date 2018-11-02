@@ -12,7 +12,7 @@ npm install react-underline-tabbar --save
 提供下划线跟随选中tab，及适应其tab的宽度或高度
 可以传入Animated动画值监听做动作同步，未传入自身也提供动画值，可以设置持续时间
 可以依据自身需要传入相关style确定容器样式
-RN和Web端支持自适应滚动，当tab的宽度超过容器时才发生滚动，并设置相应的滚动样式，否则默认使用justifyContent: space-between样式充满容器，可以通过设置style改变默认样式
+RN和Web端支持自适应滚动，当tab的宽度超过容器时才发生滚动，并设置相应的滚动样式，否则默认使用justifyContent: space-between样式充满容器，可以通过设置scrollViewStyle改变默认样式
 可以通过传入underlineStyle中的width/height给予下划线固定尺寸，超出容器尺寸时忽略，可以通过设置isAutoSize使在tabBar可滚动时恢复为自动尺寸
 
 ## 注意

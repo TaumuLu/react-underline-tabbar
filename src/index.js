@@ -1,14 +1,6 @@
 import { PureComponent } from 'react'
 import { TabBarHOC } from './decorators'
 
-const viewInitialStyle = {
-  backgroundColor: 'transparent',
-}
-
-const textInitialStyle = {
-  color: 'transparent',
-  ...viewInitialStyle,
-}
 
 @TabBarHOC
 export default class TabBar extends PureComponent {
@@ -18,10 +10,7 @@ export default class TabBar extends PureComponent {
     let tabStyle = {
       flex: undefined,
     }
-    let tabTextStyle = {}
-    let tabTextActiveStyle = {}
-    let tabActiveStyle = {}
-    let underlineStyle = {}
+    let containerStyle = {}
     if (this.isScrollTabBar !== null) {
       if (this.isScrollTabBar) {
         scrollViewflex = undefined
@@ -31,26 +20,21 @@ export default class TabBar extends PureComponent {
         tabStyle = {}
       }
     } else {
-      tabStyle = viewInitialStyle
-      tabActiveStyle = viewInitialStyle
-      underlineStyle = viewInitialStyle
-      tabTextStyle = textInitialStyle
-      tabTextActiveStyle = textInitialStyle
+      containerStyle = {
+        opacity: 0,
+      }
     }
     const linePos = vertical ? 'right' : 'bottom'
 
     return {
+      containerStyle,
       scrollViewStyle: {
         flex: scrollViewflex,
       },
       underlineStyle: {
-        ...underlineStyle,
         [linePos]: 0,
       },
       tabStyle,
-      tabActiveStyle,
-      tabTextStyle,
-      tabTextActiveStyle,
     }
   }
 }
