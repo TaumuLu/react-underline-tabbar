@@ -17,7 +17,7 @@ RN and Web support adaptive scrolling, scrolling when the width of the tab excee
 You can use the width/height in the underlineStyle to give the underline a fixed size. If you exceed the container size, you can ignore it. You can set the isAutoSize to restore the automatic size when the tabBar is scrollable.  
 
 ## Note
-based on[react-native-underline-tabbar](https://github.com/Slowyn/react-native-underline-tabbar)The RN component library draws on the animation of the underlined part. Based on this, the scrolling and onLayout code is optimized, and the web component is developed. If you are interested, you can go and see it.  
+based on [react-native-underline-tabbar](https://github.com/Slowyn/react-native-underline-tabbar) The RN component library draws on the animation of the underlined part. Based on this, the scrolling and onLayout code is optimized, and the web component is developed. If you are interested, you can go and see it.  
 Tabs view synchronization animation can be done with react-scroll-paged-view  
 
 ## Demo
