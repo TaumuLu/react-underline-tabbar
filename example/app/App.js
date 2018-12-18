@@ -59,11 +59,11 @@ class Page extends Component {
 
     return (
       <View style={styles.container}>
-        <TextInput
+        {/* <TextInput
           style={{ height: 40, width: 200, borderColor: 'gray', borderWidth: 1 }}
           onChangeText={this._onChangeText}
           value={`${value}`}
-        />
+        /> */}
         <Text style={styles.welcome}>
           {label}
         </Text>
@@ -141,10 +141,10 @@ class UnderlineTabBarExample extends Component {
     { label: 'Page' },
     { label: 'Page #22' },
     { label: 'Page #333' },
-    // { label: 'Page #4444' },
-    // { label: 'Page #55555' },
-    // { label: 'Page #666666' },
-    // { label: 'Page #777777' },
+    { label: 'Page #4444' },
+    { label: 'Page #55555' },
+    { label: 'Page #666666' },
+    { label: 'Page #777777' },
     // { label: 'Page #888888' },
     // { label: 'Page #999999' },
     // { label: 'Page #000000' },
@@ -172,14 +172,14 @@ class UnderlineTabBarExample extends Component {
 
     return (
       <View style={[styles.containerWrap]}>
-        <TabBar
+        {/* <TabBar
           tabs={this.tabs}
           // tabStyle={{ flex: 1 }}
           scrollViewStyle={{ justifyContent: 'space-around' }}
           vertical={false}
           goToPage={this._goToPage}
           activeTab={activeTab}
-        />
+        /> */}
         <ViewPaged
           vertical={false}
           // initialPage={3}
@@ -190,7 +190,7 @@ class UnderlineTabBarExample extends Component {
             return (
               <TabBar
                 tabs={this.tabs}
-                // tabStyle={{ flex: 1 }}
+                tabStyle={{ paddingHorizontal: 8 }}
                 {...params}
                 vertical={false}
                 // scrollViewStyle={{ flex: 1 }}

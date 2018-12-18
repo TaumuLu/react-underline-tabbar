@@ -19,6 +19,11 @@ RN和Web端支持自适应滚动，当tab的宽度超过容器时才发生滚动
 基于[react-native-underline-tabbar](https://github.com/Slowyn/react-native-underline-tabbar)RN组件库，借鉴了下划线部分的动画处理，在此基础上优化了滚动和onLayout的代码，并开发了web组件，感兴趣的可以去看下
 可以配合react-scroll-paged-view来做tabs视图同步动画
 
+## Demo
+| Tab | Scroll Tab |
+| --- | ---------- |
+| ![Tab](./demo.tab.gif) | ![Scroll-Tab](./demo.scroll-tab.gif) |
+
 ## 使用
 结合可以配合react-scroll-paged-view使用
 ```javascript
