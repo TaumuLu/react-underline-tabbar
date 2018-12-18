@@ -1,5 +1,5 @@
 # react-underline-tabbar
-[View README in English](./README.md)  
+[以中文查看](./README_zh-CN.md)  
 
 **Tab, underlined, auto scrolling**
 
