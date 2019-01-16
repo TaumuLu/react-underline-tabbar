@@ -127,10 +127,11 @@ export default function ScrollPageHOC(WrappedComponent) {
     checkMeasures = (isUpdate) => {
       const { tabs } = this.props
       const currentTabsLen = size(tabs)
-      const isGtMinLimit = currentTabsLen > 1
+      // const isGtMinLimit = currentTabsLen > 1
       const tabStateDone = currentTabsLen === size(keys(this.tabState))
 
-      if (isGtMinLimit && this.containerLayout && this.scrollViewLayout && tabStateDone) {
+      // if (isGtMinLimit && this.containerLayout && this.scrollViewLayout && tabStateDone) {
+      if (this.containerLayout && this.scrollViewLayout && tabStateDone) {
         // 滚动尺寸发生变化时更新动画映射值
         if (!this.initialSetupWasDone || isUpdate) {
           this.calculateInterpolations()
@@ -335,7 +336,8 @@ export default function ScrollPageHOC(WrappedComponent) {
       const onLayout = event => this.onTabLayout(event, page)
 
       if (renderTab) {
-        return renderTab({ tab, page, onPress, onLayout, isTabActive })
+        const element = renderTab({ tab, page, onPress, onLayout, isTabActive })
+        return React.cloneElement(element, { onLayout })
       }
       const { label } = tab
       const { tabStyle, tabActiveStyle, tabTextStyle, tabTextActiveStyle } = this._getStyle()

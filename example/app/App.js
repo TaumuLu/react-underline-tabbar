@@ -167,6 +167,14 @@ class UnderlineTabBarExample extends Component {
     this.setState({ activeTab })
   }
 
+  renderTab({ onPress, onLayout, tab: { label } }) {
+    return (
+      <TouchableOpacity onPress={onPress} style={{ height: 50 }}>
+        <Text>{label}</Text>
+      </TouchableOpacity>
+    )
+  }
+
   render() {
     const { activeTab } = this.state
 
@@ -193,6 +201,7 @@ class UnderlineTabBarExample extends Component {
                 tabStyle={{ paddingHorizontal: 8 }}
                 {...params}
                 vertical={false}
+                // renderTab={this.renderTab}
                 // scrollViewStyle={{ flex: 1 }}
                 // underlineStyle={{ width: 60 }}
                 // isAutoSize
