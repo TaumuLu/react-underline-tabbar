@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
-import { ScrollView, TextInput, StyleSheet, Text, View, TouchableOpacity, Animated, Dimensions, Platform, NativeModules } from 'react-native'
+import {
+  ScrollView, TextInput, StyleSheet, Text, View, TouchableOpacity, Animated, Dimensions, Platform, NativeModules
+} from 'react-native'
 import { ViewPaged } from 'react-scroll-paged-view'
 
 import TabBar from 'react-underline-tabbar'
 // import TabBar from '../src'
 
-let height = Dimensions.get('window').height
-const width = Dimensions.get('window').width
+let { height } = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 
 if (Platform.OS === 'android') {
   height -= NativeModules.StatusBarManager.HEIGHT
@@ -75,7 +77,9 @@ class Page extends Component {
   }
 }
 
-const Tab = ({ tab, page, isTabActive, onPressHandler, onTabLayout, styles }) => {
+const Tab = ({
+  tab, page, isTabActive, onPressHandler, onTabLayout, styles,
+}) => {
   const { label, icon } = tab
   const style = {
     marginHorizontal: 20,
@@ -114,6 +118,7 @@ const Tab = ({ tab, page, isTabActive, onPressHandler, onTabLayout, styles }) =>
 
 class UnderlineTabBarExample extends Component {
   _scrollX = new Animated.Value(0);
+
   // 6 is a quantity of tabs
   interpolators = Array.from({ length: 6 }, (_, i) => i).map(idx => ({
     scale: this._scrollX.interpolate({
@@ -217,7 +222,7 @@ class UnderlineTabBarExample extends Component {
           }}
         >
           {this.tabs.map(({ label, text }, index) => (
-            <Page key={index} tabLabel={{ label }} label={text || label}/>
+            <Page key={index} tabLabel={{ label }} label={text || label} />
           ))}
         </ViewPaged>
         {/* <ViewPaged

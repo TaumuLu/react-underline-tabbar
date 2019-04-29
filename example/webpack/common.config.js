@@ -10,6 +10,7 @@ module.exports = {
   devtool: isDev ? 'false' : 'source-map',
   resolve: {
     alias: {
+      react: 'react',
       'react-native': 'react-native-web',
       'react-underline-tabbar': path.join(context, './../src'),
       animated: path.join(context, './node_modules/animated'),
